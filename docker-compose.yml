@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  postgres:
+    container_name: postgres_db
+    image: postgres:15.3-alpine3.18
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: comic_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - db
+    restart: always
+
+  redis_stack:
+    container_name: redis_stack
+    image: redis/redis-stack:latest
+    ports:
+      - '6379:6379'
+      - '8001:8001'
+    volumes:
+      - redis_data:/data
+    restart: always
+
+networks:
+  db:
+    driver: bridge
+
+volumes:
+  pgdata:
+  redis_data:
